@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"time"
 
@@ -46,6 +47,15 @@ func main() {
 func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	fmt.Printf("Time: %v || Message: %+v || From: %s\n", time.UnixDate, m.Content, m.Author)
+	f, err := os.OpenFile("logs.txt", os.O_APPEND|os.O_WRONLY, 0600)
+	defer f.Close()
+	if err != nil {
+		panic(err)
+	}
+	_, err = f.WriteString("Time: " + time.UnixDate + " || Message: " + m.Content + " || From: " + m.Author.Username + "\n")
+	if err != nil {
+		panic(err)
+	}
 
 	if strings.HasPrefix(m.Content, config.BotPrefix) {
 		if m.Author.Bot {
