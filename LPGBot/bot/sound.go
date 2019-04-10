@@ -31,7 +31,7 @@ func PlaySound(s *discordgo.Session, guildID, channelID string) (err error) {
 	}
 
 	// Sleep for a specified amount of time before playing the sound
-	time.Sleep(250 * time.Millisecond)
+	time.Sleep(10 * time.Millisecond)
 
 	// Start speaking.
 	vc.Speaking(true)
@@ -43,9 +43,6 @@ func PlaySound(s *discordgo.Session, guildID, channelID string) (err error) {
 
 	// Stop speaking
 	vc.Speaking(false)
-
-	// Sleep for a specificed amount of time before ending.
-	time.Sleep(250 * time.Millisecond)
 
 	// Disconnect from the provided voice channel.
 	vc.Disconnect()

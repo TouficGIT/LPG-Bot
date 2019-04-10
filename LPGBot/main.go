@@ -64,7 +64,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if strings.HasPrefix(m.Content, config.BotPrefix) {
-		if m.Author.Bot {
+		if m.Author.Bot || m.Author.ID == s.State.User.ID {
 			return
 		}
 
