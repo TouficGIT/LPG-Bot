@@ -51,11 +51,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if err != nil {
 		panic(err)
 	}
-	// Save messages into logs
-	_, err = f.WriteString("Time: " + cTime + " || Message: " + m.Content + " || From: " + m.Author.Username + "\n")
-	if err != nil {
-		panic(err)
-	}
+
 	// Get Channel Id where message has been post
 	c, err := s.State.Channel(m.ChannelID)
 	if err != nil {
@@ -70,6 +66,12 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if strings.HasPrefix(m.Content, config.BotPrefix) {
 		if m.Author.Bot {
 			return
+		}
+
+		// Save messages into logs
+		_, err = f.WriteString("Time: " + cTime + " || Message: " + m.Content + " || From: " + m.Author.Username + "\n")
+		if err != nil {
+			panic(err)
 		}
 
 		switch m.Content {
