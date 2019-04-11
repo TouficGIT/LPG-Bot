@@ -7,12 +7,12 @@ import (
 	"net/http"
 )
 
-type ChuckJoke struct {
+type chuckJoke struct {
 	ID   int    `json:"id"`
 	Fact string `json:"fact"`
 }
 
-//Fetch Chuck Norris Joke
+// ChuckFact : Fetch Chuck Norris Joke
 func ChuckFact() (string, error) {
 	resp, err := http.Get("https://www.chucknorrisfacts.fr/api/get?data=tri:alea;type:txt;nb:1")
 	if err != nil {
@@ -25,7 +25,7 @@ func ChuckFact() (string, error) {
 		return "nil", err
 	}
 
-	var joke []ChuckJoke
+	var joke []chuckJoke
 	json.Unmarshal(body, &joke)
 	return joke[0].Fact, nil
 }
