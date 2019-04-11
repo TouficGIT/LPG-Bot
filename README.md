@@ -27,4 +27,4 @@ To create this cool bot, I used the [discordGo](https://github.com/bwmarrin/disc
 
 You should go check those amazing git repos !
 
-### Toufic
+### @Toufic :+1:
