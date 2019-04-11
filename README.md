@@ -2,7 +2,11 @@
 A bot multitask for my Discord Server named : **LaPlanqueGaming**
 ## Current features
 
- - When you type "!ping" it answer "Pong" - Awesome !
+ - When you type `!hello` LPG Bot answers you
+ - LPG Bot send you chuck norris facts if you type `!chuck`
+ - You can now play sounds on your discord with `!sd` or `!dit` <sound> cmd (see sounds below)
+ > boi / bruh / fuck / mgs / nice / ooh / oui / thug and wow
+ - And you can type `!help` if you need some help
 
 ## config.json
 You need to create a '**config.json**' file where you'll save the Token of your bot.
