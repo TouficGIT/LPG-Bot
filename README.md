@@ -22,4 +22,9 @@ The syntax of your config file should be like :
 
 The BotPrefix is the prefix before the bot command. Like "!command".
 
+## Credits
+To create this cool bot, I used the [discordGo](https://github.com/bwmarrin/discordgo) and [Airhorn revived](https://github.com/jbmagination/airhornrevived) librairies.
+
+You should go check those amazing git repos !
+
 ### Toufic
