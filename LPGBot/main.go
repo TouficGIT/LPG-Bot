@@ -77,6 +77,8 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		fmt.Println(err)
 	}
 
+	bot.RicardoGame(m.Author.Username)
+
 	if strings.HasPrefix(m.Content, config.BotPrefix) {
 		if m.Author.Bot || m.Author.ID == s.State.User.ID || len(m.Content) <= 0 || m.Content[0] != '!' {
 			return
@@ -99,6 +101,9 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		case "!chuck":
 			fact, _ := bot.ChuckFact()
 			_, _ = s.ChannelMessageSend(m.ChannelID, fact)
+		case "!ricardo":
+			ric, _ := bot.Ricardo(m.Author.Username, m.Content)
+			_, _ = s.ChannelMessageSend(m.ChannelID, ric)
 		case "!sd", "!sound", "!dit":
 			for _, vs := range g.VoiceStates {
 				if vs.UserID == m.Author.ID {
