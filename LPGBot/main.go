@@ -77,7 +77,11 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		fmt.Println(err)
 	}
 
-	bot.RicardoGame(m.Author.Username)
+	// Update points of the player + display his new rank if he get a new one
+	rank, _ := bot.RicardoGame(m.Author.Username)
+	if len(rank) != 0 {
+		_, _ = s.ChannelMessageSend(m.ChannelID, rank)
+	}
 
 	if strings.HasPrefix(m.Content, config.BotPrefix) {
 		if m.Author.Bot || m.Author.ID == s.State.User.ID || len(m.Content) <= 0 || m.Content[0] != '!' {
