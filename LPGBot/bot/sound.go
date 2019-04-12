@@ -23,7 +23,7 @@ type sound struct {
 	buffer [][]byte
 }
 
-// Array of all the sounds availables
+// LPGSOUND : Array of all the sounds availables
 var LPGSOUND = &soundCollection{
 	Prefix: "lpgsound",
 	Commands: []string{
@@ -100,6 +100,7 @@ func createSound(Name string) *sound {
 	}
 }
 
+// LoadAll : Is used to load all the sounds available
 func (sc *soundCollection) LoadAll() {
 	for _, sound := range sc.Sounds {
 		sound.load(sc)

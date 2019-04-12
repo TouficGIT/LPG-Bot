@@ -11,6 +11,14 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+var helpMsg = `Salut, je suis **LPG Bot** ! Je répond aux commandes suivantes :
+
+- **!hello** ou **!hi** : pour me dire bonjour et je te répondrai
+- **!chuck** : pour balancer une fact sur chuck norris
+- **!sd** ou **!dit <son>** : pour jouer l'un des sons suivants
+	-> boi / bruh / fuck / mgs / nice / ooh / oui / thug et wow 
+- **!help** ou **!lpg**: pour afficher ce message d'aide ^^ `
+
 func main() {
 
 	err := config.ReadConfig()
@@ -99,15 +107,13 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 					return
 				}
 			}
+		case "!wt", "!weather", "!meteo", "!météo", "!mt":
+			_ = s.MessageReactionAdd(m.ChannelID, m.ID, "🌞")
+			weather, _ := bot.Weather(parts[1])
+			_, _ = s.ChannelMessageSend(m.ChannelID, weather)
 		case "!help", "!lpg":
-			_ = s.MessageReactionAdd(m.ChannelID, m.ID, "🤙")
-			_, _ = s.ChannelMessageSend(m.ChannelID, `Salut, je suis **LPG Bot** ! Je répond aux commandes suivantes :
-
-- **!hello** ou **!hi** : pour me dire bonjour et je te répondrai
-- **!chuck** : pour balancer une fact sur chuck norris
-- **!sd** ou **!dit <son>** : pour jouer l'un des sons suivants
-	-> boi / bruh / fuck / mgs / nice / ooh / oui / thug et wow 
-- **!help** ou **!lpg**: pour afficher ce message d'aide ^^ `)
+			_ = s.MessageReactionAdd(m.ChannelID, m.ID, "🧙")
+			_, _ = s.ChannelMessageSend(m.ChannelID, helpMsg)
 		default:
 			_, _ = s.ChannelMessageSend(m.ChannelID, "Je n'ai pas compris ton message "+m.Author.Username+"  ¯\\_(ツ)_/¯")
 			_ = s.MessageReactionAdd(m.ChannelID, m.ID, "🤔")
