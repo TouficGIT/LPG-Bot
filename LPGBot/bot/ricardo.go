@@ -16,14 +16,15 @@ type User struct {
 	Badge    string `json:"badge"`
 }
 
-// Ricardo func : it used to register a player to ricardo game
-// if the player is not already registered
-func Ricardo(msgUser string, msg string) (string, error) {
-	var rIntro = `
+var rIntro = `
 	 ___ ___ ___   _   ___ ___   ___     ___                  _ 
 	| _ \_ _/ __| /_\ | _ \   \ / _ \   / __|__ _ _ __  ___  | |
 	|   /| | (__ / _ \|   / |) | (_) | | (_ / _  | '  \/ -_) |_|
 	|_|_\___\___/_/ \_\_|_\___/ \___/   \___\__,_|_|_|_\___| (_)`
+
+// Ricardo func : it used to register a player to ricardo game
+// if the player is not already registered
+func Ricardo(msgUser string, msg string) (string, error) {
 
 	var u []User
 	parts := strings.Split(strings.ToLower(msg), " ")
@@ -91,25 +92,25 @@ func RicardoGame(user string) (string, error) {
 			switch u[i].Points {
 			case 10:
 				u[i].Badge = "https://tenor.com/view/ricardo-super-saiyan-smile-gif-13677081"
-				newRank = "Félicitation " + u[i].Username + " !\nTu obtiens le badge \n" + u[i].Badge
+				newRank = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTu obtiens le badge: \n" + u[i].Badge
 			case 30:
 				u[i].Badge = "https://tenor.com/view/ricardo-super-saiyan2-smile-gif-13677092"
-				newRank = "Félicitation " + u[i].Username + " !\nTu obtiens le badge \n" + u[i].Badge
+				newRank = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTu obtiens le badge \n" + u[i].Badge
 			case 60:
 				u[i].Badge = "https://tenor.com/view/ricardo-super-saiyan3-flex-gif-13677095"
-				newRank = "Félicitation " + u[i].Username + " !\nTu obtiens le badge \n" + u[i].Badge
+				newRank = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTu obtiens le badge \n" + u[i].Badge
 			case 110:
 				u[i].Badge = "https://tenor.com/view/ricardo-super-saiyan-god-gif-13677088"
-				newRank = "Félicitation " + u[i].Username + " !\nTu obtiens le badge \n" + u[i].Badge
+				newRank = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTu obtiens le badge \n" + u[i].Badge
 			case 200:
 				u[i].Badge = "https://tenor.com/view/ricardo-super-saiyan-blue-naked-gif-13677086"
-				newRank = "Félicitation " + u[i].Username + " !\nTu obtiens le badge \n" + u[i].Badge
+				newRank = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTu obtiens le badge \n" + u[i].Badge
 			case 300:
 				u[i].Badge = "https://tenor.com/view/ricardo-fused-super-saiyan-blue-gif-13677091"
-				newRank = "Félicitation " + u[i].Username + " !\nTu obtiens le badge \n" + u[i].Badge
+				newRank = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTu obtiens le badge \n" + u[i].Badge
 			case 600:
 				u[i].Badge = "https://tenor.com/view/ricardo-ultra-instinct-sexy-dancing-gif-13677084"
-				newRank = "Félicitation " + u[i].Username + " !\nTu obtiens le badge \n" + u[i].Badge
+				newRank = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTu obtiens le badge \n" + u[i].Badge
 			}
 		}
 	}
