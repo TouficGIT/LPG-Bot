@@ -13,14 +13,16 @@ import (
 
 var helpMsg = `Salut, je suis **LPG Bot** ! Je répond aux commandes suivantes :
 
-- **!hello** ou **!hi** : pour me dire bonjour et je te répondrai
-- **!chuck** : pour balancer une fact sur chuck norris
-- **!sd** ou **!dit <son>** : pour jouer l'un des sons suivants
-	-> boi / bruh / fuck / mgs / nice / ooh / oui / thug et wow 
-- **!help** ou **!lpg**: pour afficher ce message d'aide ^^ `
+**!hello** ou **!hi** : pour me dire bonjour et je te répondrai
+**!météo** ou **!mt** + **<ville>** : pour obtenir la météo sur cette ville
+**!sd** ou **!dit** + **<son>** : pour jouer l'un des sons suivants
+	-> boi / bruh / fuck / mgs / nice / ooh / oui / thug et wow
+**!chuck** : pour balancer une fact sur chuck norris
+**!help** ou **!lpg**: pour afficher ce message d'aide ^^ `
 
 func main() {
 
+	// Read the config file
 	err := config.ReadConfig()
 	if err != nil {
 		fmt.Println(err.Error())
@@ -30,6 +32,7 @@ func main() {
 	// Load all lpg sounds into a buffer
 	bot.LPGSOUND.LoadAll()
 
+	// creation of lpgBot
 	lpgBot, err := discordgo.New("Bot " + config.Token)
 
 	if err != nil {
