@@ -1,5 +1,6 @@
 # LPG-Bot
 A bot multitask for my Discord Server named : **LaPlanqueGaming**
+
 ![lpgbot logo](https://github.com/TouficGIT/LPG-bot/blob/master/LPGBot/LogoBot_alpha.png)
 ## Current features
 
