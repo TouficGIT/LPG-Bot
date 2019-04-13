@@ -24,12 +24,15 @@ A bot multitask for my Discord Server named : **LaPlanqueGaming**
 Requirements: Have Go installed (https://golang.org/)
 1. Clone repository
 2. Run `Go build` in the clone repository
-3. Complete the `config.json` file
-4. Execute `LPGBOT.exe`
+3. Create a bot on your discord developper account
+4. Create the `config.json` file and place it inside the repository, following the template below
+5. Execute `LPGBOT.exe`
 
 ## config.json
+You'll need to create a new bot in your Discord developper account.
+Then a bot token will be available. Add it to the config.json file
 You need to create a '**config.json**' file where you'll save the Token of your bot.
-The token is available in the Discord API.
+Discord Developper: https://discordapp.com/developers/applications/
 
 The syntax of your config file should be like :
 
