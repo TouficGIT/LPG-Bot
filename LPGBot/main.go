@@ -79,7 +79,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	// Update points of the player + display his new rank if he get a new one
-	rank, _ := bot.RicardoGame(m.Author.Username)
+	rank, _ := bot.RicardoGame(s, g.ID, m.Author.ID, m.Author.Username)
 	if len(rank) != 0 {
 		_, _ = s.ChannelMessageSend(m.ChannelID, rank)
 	}
