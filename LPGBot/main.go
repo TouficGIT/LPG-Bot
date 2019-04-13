@@ -14,10 +14,11 @@ import (
 var helpMsg = `Salut, je suis **LPG Bot** ! Je répond aux commandes suivantes :
 
 **!hello** ou **!hi** : pour me dire bonjour et je te répondrai
-**!météo** ou **!mt** + **<ville>** : pour obtenir la météo sur cette ville
 **!sd** ou **!dit** + **<son>** : pour jouer l'un des sons suivants
 	-> boi / bruh / fuck / mgs / nice / ooh / oui / thug et wow
+**!ricardo** : pour participer au RicardoGame !
 **!chuck** : pour balancer une fact sur chuck norris
+**!météo** ou **!mt** + **<ville>** : pour obtenir la météo sur cette ville
 **!help** ou **!lpg**: pour afficher ce message d'aide ^^ `
 
 func main() {

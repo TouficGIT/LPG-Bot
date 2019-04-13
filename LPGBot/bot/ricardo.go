@@ -22,6 +22,17 @@ var rIntro = `
 	|   /| | (__ / _ \|   / |) | (_) | | (_ / _  | '  \/ -_) |_|
 	|_|_\___\___/_/ \_\_|_\___/ \___/   \___\__,_|_|_|_\___| (_)`
 
+var rRules = `
+** Les règles du jeu:**
+	- Postez des messages sur le serveur LPG pour gagner des points
+	- Remportez de nouveaux badges ricardo !
+	- Les badges vous permettent d'obtenir un nouveau rang
+
+	- !ricardo stat: pour afficher votre score et votre badge
+
+Have fun !
+`
+
 // Ricardo func : it used to register a player to ricardo game
 // if the player is not already registered
 func Ricardo(msgUser string, msg string) (string, error) {
@@ -64,7 +75,7 @@ func Ricardo(msgUser string, msg string) (string, error) {
 		println(err)
 		return "", nil
 	}
-	return "**Bienvenue " + strings.ToUpper(msgUser) + " au :** \n\n```" + rIntro + "```\n https://tenor.com/view/ricardo-milos-based-god-ricardo-milos-gif-13369215", nil
+	return "**Bienvenue " + strings.ToUpper(msgUser) + " au :** \n\n```" + rIntro + "```\n```" + rRules + "```\n https://tenor.com/view/ricardo-milos-based-god-ricardo-milos-gif-13369215", nil
 }
 
 // RicardoGame func : its the main RicardoGame function

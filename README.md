@@ -4,10 +4,13 @@ A bot multitask for my Discord Server named : **LaPlanqueGaming**
 ## Current features
 
  - When you type `!hello` LPG Bot answers you
- - The commands `!weather` / `!wt` / `!meteo` or `!mt` gives you the weather of the 2 next days
- - LPG Bot send you chuck norris facts if you type `!chuck`
  - You can now play sounds on your discord with `!sd` or `!dit` <sound> cmd (see sounds below)
  > boi / bruh / fuck / mgs / nice / ooh / oui / thug and wow
+ - You can join the RicardoGame ! With the command `!ricardo` !
+ > The ricardo game allows you to earn new server tags !
+ - LPG Bot send you chuck norris facts if you type `!chuck`
+ - The commands `!weather` / `!wt` / `!meteo` or `!mt` gives you the weather of the 2 next days
+
  - And you can type `!help` if you need some help
 
 ## config.json
