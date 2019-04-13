@@ -71,15 +71,22 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	c, err := s.State.Channel(m.ChannelID)
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
 	// Get the guild (server)
 	g, err := s.State.Guild(c.GuildID)
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
-
+	// Get the user (server)
+	user, err := s.User(m.Author.ID)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	// Update points of the player + display his new rank if he get a new one
-	rank, _ := bot.RicardoGame(s, g.ID, m.Author.ID, m.Author.Username)
+	rank, _ := bot.RicardoGame(s, g, user)
 	if len(rank) != 0 {
 		_, _ = s.ChannelMessageSend(m.ChannelID, rank)
 	}

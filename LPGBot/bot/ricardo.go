@@ -37,13 +37,13 @@ Have fun !
 `
 
 // Ricardo func : it used to register a player to ricardo game
-// if the player is not already registered
+// if the player is not already registered, else it return a msg
 func Ricardo(msgUser string, msg string) (string, error) {
 
 	var u []User
+	msgUser = strings.ToLower(msgUser)
 	parts := strings.Split(strings.ToLower(msg), " ")
 
-	msgUser = strings.ToLower(msgUser)
 	// Open our jsonFile
 	rgFile, err := os.Open("bot/ricardo/ricardoGame.json")
 	// if we os.Open returns an error then handle it
@@ -84,11 +84,12 @@ func Ricardo(msgUser string, msg string) (string, error) {
 }
 
 // RicardoGame func : its the main RicardoGame function
-func RicardoGame(s *discordgo.Session, guildID, userID, user string) (string, error) {
+func RicardoGame(s *discordgo.Session, g *discordgo.Guild, user *discordgo.User) (string, error) {
 	var u []User
 	var newTag string
-	newRole := ""
-	user = strings.ToLower(user)
+	var newRole string
+	uName := strings.ToLower(user.Username)
+
 	// Open our jsonFile
 	rgFile, err := os.Open("bot/ricardo/ricardoGame.json")
 	// if we os.Open returns an error then handle it
@@ -103,7 +104,7 @@ func RicardoGame(s *discordgo.Session, guildID, userID, user string) (string, er
 	}
 	json.Unmarshal(ct, &u)
 	for i := 0; i < len(u); i++ {
-		if user == u[i].Username {
+		if uName == u[i].Username {
 			u[i].Points++
 
 			switch u[i].Points {
@@ -137,14 +138,16 @@ func RicardoGame(s *discordgo.Session, guildID, userID, user string) (string, er
 		}
 	}
 
-	roles, _ := s.GuildRoles(guildID)
+	// Get the guild's roles
+	gRoles, _ := s.GuildRoles(g.ID)
+
 	if len(newRole) != 0 {
-		for i := 0; i < len(roles); i++ {
-			if newRole == roles[i].Name {
-				err = s.GuildMemberRoleAdd(guildID, userID, roles[i].ID)
+		for i := 0; i < len(gRoles); i++ {
+			if newRole == gRoles[i].Name {
+				err = s.GuildMemberRoleAdd(g.ID, user.ID, gRoles[i].ID)
 				if err != nil {
-					println("GuildMemberRoleAdd(" + guildID + "," + userID + "," + roles[i].ID + ")")
-					println("Impossible d'affecter le rôle: "+newRole+" au joueur: "+user, err)
+					println("GuildMemberRoleAdd(" + g.ID + "," + user.ID + "," + gRoles[i].ID + ")")
+					println("Impossible d'affecter le rôle: "+newRole+" au joueur: "+user.Username, err)
 				}
 			}
 		}
