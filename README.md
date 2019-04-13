@@ -28,7 +28,7 @@ The syntax of your config file should be like :
 The BotPrefix is the prefix before the bot command. Like "!command".
 
 ## Todo list
-- [] Fix guild role add function, in RicardoGame
+- [] Fix GuildRoleAdd function, in RicardoGame
 - [] Add a new game (Hangman ?)
 - [] Refact the code ?
 
