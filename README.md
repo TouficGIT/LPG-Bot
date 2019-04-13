@@ -14,11 +14,18 @@ A bot multitask for my Discord Server named : **LaPlanqueGaming**
 
  - And you can type `!help` if you need some help
 
- ## Todo list
+ ## Todo list / Roadmap
 - [ ] Fix GuildRoleAdd / GuildRoleRemove functions, in RicardoGame
-- [ ] Fix role earned display, in RicardoGame
+- [x] Fix role earned display, in RicardoGame
 - [ ] Add a new game (Hangman ?)
-- [ ] Refact the code ?
+- [ ] Refact the code (especially RicardoGame) ?
+
+## Install
+Requirements: Have Go installed
+1. Clone repository
+2. Run `Go build` in the clone repository
+3. Complete the `config.json` file
+4. Execute `LPGBOT.exe`
 
 ## config.json
 You need to create a '**config.json**' file where you'll save the Token of your bot.
