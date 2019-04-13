@@ -59,7 +59,7 @@ func Ricardo(msgUser string, msg string) (string, error) {
 			if parts[1] == "stat" {
 				return "```" + rIntro + "```\n\nUsername: " + strings.ToUpper(msgUser) + "\nVotre score actuel: " + strconv.Itoa(u[i].Points) + "\nBadge: " + u[i].Badge, nil
 			}
-			return "Vous participez déjà au ricardo game " + msgUser, nil
+			return "Vous participez déjà au ricardo game " + strings.ToUpper(msgUser) + " ! 🎮", nil
 		}
 	}
 	// Adding the new player
