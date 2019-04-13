@@ -54,12 +54,15 @@ func Ricardo(msgUser string, msg string) (string, error) {
 		fmt.Println("Unknown response body")
 	}
 	json.Unmarshal(ct, &u)
+	println(len(parts))
 	for i := 0; i < len(u); i++ {
 		if msgUser == u[i].Username {
-			if parts[1] == "stat" {
+			if len(parts) > 1 && parts[1] == "stat" {
 				return "```" + rIntro + "```\n\nUsername: " + strings.ToUpper(msgUser) + "\nVotre score actuel: " + strconv.Itoa(u[i].Points) + "\nBadge: " + u[i].Badge, nil
 			}
-			return "Vous participez déjà au ricardo game " + strings.ToUpper(msgUser) + " ! 🎮", nil
+			if parts[0] == "!ricardo" {
+				return "Vous participez déjà au ricardo game " + strings.ToUpper(msgUser) + " ! 🎮\n", nil
+			}
 		}
 	}
 	// Adding the new player
