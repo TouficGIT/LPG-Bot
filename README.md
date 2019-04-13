@@ -27,6 +27,11 @@ The syntax of your config file should be like :
 
 The BotPrefix is the prefix before the bot command. Like "!command".
 
+## Todo list
+- [] Fix guild role add function, in RicardoGame
+- [] Add a new game (Hangman ?)
+- [] Refact the code ?
+
 ## Credits
 To create this cool bot, I used the [discordGo](https://github.com/bwmarrin/discordgo) and [Airhorn revived](https://github.com/jbmagination/airhornrevived) librairies.
 
