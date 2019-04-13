@@ -18,6 +18,7 @@ var helpMsg = `Salut, je suis **LPG Bot** ! Je répond aux commandes suivantes :
 	-> boi / bruh / fuck / mgs / nice / ooh / oui / thug et wow
 **!ricardo** : pour participer au RicardoGame !
 **!chuck** : pour balancer une fact sur chuck norris
+**!flip** : pour jouer à pile ou face
 **!météo** ou **!mt** + **<ville>** : pour obtenir la météo sur cette ville
 **!help** ou **!lpg**: pour afficher ce message d'aide ^^ `
 
@@ -131,6 +132,10 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			_ = s.MessageReactionAdd(m.ChannelID, m.ID, "🌞")
 			weather, _ := bot.Weather(parts[1])
 			_, _ = s.ChannelMessageSend(m.ChannelID, weather)
+		case "!flip", "!fp":
+			coin, _ := bot.FlipCoin()
+			_ = s.MessageReactionAdd(m.ChannelID, m.ID, "🎲")
+			_, _ = s.ChannelMessageSend(m.ChannelID, coin)
 		case "!help", "!lpg":
 			_ = s.MessageReactionAdd(m.ChannelID, m.ID, "🧙")
 			_, _ = s.ChannelMessageSend(m.ChannelID, helpMsg)
