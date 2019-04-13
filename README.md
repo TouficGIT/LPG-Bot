@@ -21,7 +21,7 @@ A bot multitask for my Discord Server named : **LaPlanqueGaming**
 - [ ] Refact the code (especially RicardoGame) ?
 
 ## Install
-Requirements: Have Go installed
+Requirements: Have Go installed (https://golang.org/)
 1. Clone repository
 2. Run `Go build` in the clone repository
 3. Complete the `config.json` file
