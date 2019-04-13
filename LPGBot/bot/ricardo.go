@@ -44,6 +44,8 @@ func Ricardo(msgUser string, msg string) (string, error) {
 	msgUser = strings.ToLower(msgUser)
 	parts := strings.Split(strings.ToLower(msg), " ")
 
+	// TODO: Refact the code below into a "Open file" function
+
 	// Open our jsonFile
 	rgFile, err := os.Open("bot/ricardo/ricardoGame.json")
 	// if we os.Open returns an error then handle it
@@ -62,11 +64,14 @@ func Ricardo(msgUser string, msg string) (string, error) {
 			if len(parts) > 1 && parts[1] == "stat" {
 				return "```" + rIntro + "```\n\nUsername: " + strings.ToUpper(msgUser) + "\nRôle obtenu: " + u[i].Role + "\nVotre score actuel: " + strconv.Itoa(u[i].Points) + "\nBadge: " + u[i].Badge, nil
 			}
-			if parts[0] == "!ricardo" {
-				return "Vous participez déjà au ricardo game " + strings.ToUpper(msgUser) + " ! 🎮\n```!ricardo stat: pour obtenir vos statistiques```\n", nil
-			}
+			return "Vous participez déjà au ricardo game " + strings.ToUpper(msgUser) + " ! 🎮\n```!ricardo stat: pour obtenir vos statistiques```\n", nil
 		}
 	}
+
+	// TODO: Refact the code below in a "write file" function, and find a solution to lock the file
+	// to avoid the case of 2 players trying to play in same time -> and their names are finally not
+	// write into the json file.
+
 	// Adding the new player
 	data := append(u, User{Username: msgUser, Points: 0, Badge: "", Role: ""})
 	// Marshal the new user to the json file
@@ -102,6 +107,9 @@ func RicardoGame(s *discordgo.Session, g *discordgo.Guild, user *discordgo.User)
 	if err != nil {
 		fmt.Println("Unknown response body")
 	}
+	// Get the guild's roles
+	gRoles, _ := s.GuildRoles(g.ID)
+
 	json.Unmarshal(ct, &u)
 	for i := 0; i < len(u); i++ {
 		if uName == u[i].Username {
@@ -133,22 +141,24 @@ func RicardoGame(s *discordgo.Session, g *discordgo.Guild, user *discordgo.User)
 				u[i].Badge = "https://tenor.com/view/ricardo-ultra-instinct-sexy-dancing-gif-13677084"
 				newTag = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTu obtiens le badge \n" + u[i].Badge
 			}
-
-			u[i].Role = newRole
-		}
-	}
-
-	// Get the guild's roles
-	gRoles, _ := s.GuildRoles(g.ID)
-
-	if len(newRole) != 0 {
-		for i := 0; i < len(gRoles); i++ {
-			if newRole == gRoles[i].Name {
-				err = s.GuildMemberRoleAdd(g.ID, user.ID, gRoles[i].ID)
-				if err != nil {
-					println("GuildMemberRoleAdd(" + g.ID + "," + user.ID + "," + gRoles[i].ID + ")")
-					println("Impossible d'affecter le rôle: "+newRole+" au joueur: "+user.Username, err)
+			if len(newRole) != 0 {
+				for _, nRole := range gRoles {
+					if u[i].Role == nRole.Name {
+						err = s.GuildMemberRoleRemove(g.ID, user.ID, nRole.ID)
+						if err != nil {
+							println("GuildMemberRoleRemove(" + g.ID + "," + user.ID + "," + nRole.ID + ")")
+							println("Impossible de retirer le rôle: "+nRole.Name+" au joueur: "+user.Username+" sur le serveur "+g.Name, err)
+						}
+					}
+					if newRole == nRole.Name {
+						err = s.GuildMemberRoleAdd(g.ID, user.ID, nRole.ID)
+						if err != nil {
+							println("GuildMemberRoleAdd(" + g.ID + "," + user.ID + "," + nRole.ID + ")")
+							println("Impossible d'affecter le rôle: "+nRole.Name+" au joueur: "+user.Username+" sur le serveur "+g.Name, err)
+						}
+					}
 				}
+				u[i].Role = newRole
 			}
 		}
 	}

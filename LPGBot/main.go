@@ -49,7 +49,7 @@ func main() {
 		return
 	}
 
-	fmt.Println("Bot is running !")
+	fmt.Println("LPG Bot is connected !")
 
 	<-make(chan struct{})
 	return
