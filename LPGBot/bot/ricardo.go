@@ -63,7 +63,7 @@ func Ricardo(msgUser string, msg string) (string, error) {
 				return "```" + rIntro + "```\n\nUsername: " + strings.ToUpper(msgUser) + "\nRôle obtenu: " + u[i].Role + "\nVotre score actuel: " + strconv.Itoa(u[i].Points) + "\nBadge: " + u[i].Badge, nil
 			}
 			if parts[0] == "!ricardo" {
-				return "Vous participez déjà au ricardo game " + strings.ToUpper(msgUser) + " ! 🎮\n", nil
+				return "Vous participez déjà au ricardo game " + strings.ToUpper(msgUser) + " ! 🎮\n```!ricardo stat: pour obtenir vos statistiques```\n", nil
 			}
 		}
 	}
@@ -116,6 +116,7 @@ func RicardoGame(s *discordgo.Session, guildID, userID, user string) (string, er
 				newTag = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTu obtiens le badge \n" + u[i].Badge
 			case 60:
 				u[i].Badge = "https://tenor.com/view/ricardo-super-saiyan3-flex-gif-13677095"
+				newRole = "PGM"
 				newTag = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTu obtiens le badge \n" + u[i].Badge
 			case 110:
 				u[i].Badge = "https://tenor.com/view/ricardo-super-saiyan-god-gif-13677088"
@@ -125,11 +126,14 @@ func RicardoGame(s *discordgo.Session, guildID, userID, user string) (string, er
 				newTag = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTu obtiens le badge \n" + u[i].Badge
 			case 300:
 				u[i].Badge = "https://tenor.com/view/ricardo-fused-super-saiyan-blue-gif-13677091"
+				newRole = "Ricardos"
 				newTag = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTu obtiens le badge \n" + u[i].Badge
 			case 600:
 				u[i].Badge = "https://tenor.com/view/ricardo-ultra-instinct-sexy-dancing-gif-13677084"
 				newTag = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTu obtiens le badge \n" + u[i].Badge
 			}
+
+			u[i].Role = newRole
 		}
 	}
 

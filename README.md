@@ -15,6 +15,7 @@ A bot multitask for my Discord Server named : **LaPlanqueGaming**
 
  ## Todo list
 - [ ] Fix GuildRoleAdd function, in RicardoGame
+- [ ] Fix role earned display, in RicardoGame
 - [ ] Add a new game (Hangman ?)
 - [ ] Refact the code ?
 
