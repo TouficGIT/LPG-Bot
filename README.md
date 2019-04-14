@@ -8,6 +8,8 @@ A bot multitask for my Discord Server named : **LaPlanqueGaming**
  > boi / bruh / fuck / mgs / nice / ooh / oui / thug and wow
  - You can join the RicardoGame ! With the command `!ricardo` !
  > The ricardo game allows you to earn new server tags !
+ - Try your video game words knowledge with the `!hangman` cmd
+ > Enter `!h + <guess>` to send a guess
  - LPG Bot send you chuck norris facts if you type `!chuck`
  - Play to head and tails with the `!flip` command
  - Launch a dice with the `!roll` command, good luck !

@@ -14,13 +14,17 @@ import (
 var helpMsg = `Salut, je suis **LPG Bot** ! Je répond aux commandes suivantes :
 
 - **!hello** ou **!hi** : pour me dire bonjour et je te répondrai
+- **!météo** ou **!mt** + **<ville>** : pour obtenir la météo sur cette ville
+
 - **!sd** ou **!dit** + **<son>** : pour jouer l'un des sons suivants
 	-> boi / bruh / fuck / mgs / nice / ooh / oui / thug et wow
 - **!ricardo** : pour participer au RicardoGame !
+- **!hangman** ou **!h** : pour jouer au pendu avec LPG Bot
 - **!chuck** : pour balancer une fact sur chuck norris
+
 - **!flip** : pour jouer à pile ou face
 - **!roll** : pour lancer un dé
-- **!météo** ou **!mt** + **<ville>** : pour obtenir la météo sur cette ville
+
 - **!help** ou **!lpg**: pour afficher ce message d'aide ^^ `
 
 func main() {
@@ -121,14 +125,12 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		case "!ricardo":
 			ric, _ := bot.Ricardo(m.Author.Username, m.Content)
 			_, _ = s.ChannelMessageSend(m.ChannelID, ric)
-		/*
-			case "!hangman", "!h":
-				if len(parts) < 2 {
-					_ = bot.NewHangman(s, g, user, m)
-				} else {
-					bot.GHangman(s, g, user, m, parts[1])
-				}
-		*/
+		case "!hangman", "!h":
+			if len(parts) < 2 {
+				_ = bot.NewHangman(s, g, user, m)
+			} else {
+				bot.GHangman(s, g, user, m, parts[1])
+			}
 		case "!sd", "!sound", "!dit":
 			for _, vs := range g.VoiceStates {
 				if vs.UserID == m.Author.ID {

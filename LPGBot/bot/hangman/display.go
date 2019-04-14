@@ -12,7 +12,6 @@ func DrawWelcome(s *discordgo.Session, m *discordgo.MessageCreate) {
    / _  / _  / _ \/ _  /    \/ _  / _ \
   /_//_/\_,_/_//_/\_, /_/_/_/\_,_/_//_/
 				 /___/                 
-
 	` + "```"
 	s.ChannelMessageSend(m.ChannelID, welc)
 	return
@@ -28,89 +27,83 @@ func drawTurns(s *discordgo.Session, m *discordgo.MessageCreate, l int) {
 	switch l {
 	case 0:
 		draw = "```" + `
-	 +---+
-	 |   |
-	 O   |
-	/|\  |
-	/ \  |
-	   	 |
-	=========
+	 	+---+
+	 	|   |
+	 	O   |
+	   /|\  |
+	 	 / \  |
+			|
+		=========
 	  ` + "```"
 	case 1:
 		draw = "```" + `
-	 +---+
-	 |   |
-	 O   |
-	/|\  |
-	     |
-	   	 |
-	=========
+		+---+
+		|   |
+		O   |
+	   /|\  |
+			|
+			|
+		=========
 	  ` + "```"
 	case 2:
 		draw = "```" + `
-	 +---+
-	 |   |
-	 O   |
-	     |
-	     |
-	   	 |
-	=========
+		+---+
+		|   |
+		O   |
+			|
+			|
+			|
+		=========
 	  ` + "```"
 	case 3:
 		draw = "```" + `
-	 +---+
-	 |   |
-	     |
-	     |
-	     |
-	   	 |
-	=========
+		+---+
+		|   |
+			|
+			|
+			|
+			|
+		=========
 	  ` + "```"
 	case 4:
 		draw = "```" + `
-	 +---+
-	     |
-	     |
-	     |
-	     |
-	   	 |
-	=========
+		+---+
+			|
+			|
+			|
+			|
+			|
+		=========
 	  ` + "```"
 	case 5:
 		draw = "```" + `
-	
-	     |
-	     |
-	     |
-	     |
-	   	 |
-	=========
+			|
+			|
+			|
+			|
+			|
+		=========
 	  ` + "```"
 	case 6:
 		draw = "```" + `
-
-	     |
-	     |
-	   	 |
-	=========
+			|
+			|
+			|
+		=========
 	  ` + "```"
 	case 7:
 		draw = "```" + `
-	=========
-	  ` + "```"
-	case 8:
-		draw = "```" + `
-
+		=========
 	  ` + "```"
 	}
 	s.ChannelMessageSend(m.ChannelID, draw)
 }
 
 func drawState(s *discordgo.Session, m *discordgo.MessageCreate, g *Game, guess string) {
-	s.ChannelMessageSend(m.ChannelID, "Essai: ")
+	s.ChannelMessageSend(m.ChannelID, "Mot à trouver: ")
 	drawLetters(s, m, g.FoundLetters)
 
-	s.ChannelMessageSend(m.ChannelID, "Utilisé:")
+	s.ChannelMessageSend(m.ChannelID, "Lettres utilisées:")
 	drawLetters(s, m, g.UsedLetters)
 
 	switch g.State {
@@ -130,8 +123,9 @@ func drawState(s *discordgo.Session, m *discordgo.MessageCreate, g *Game, guess 
 }
 
 func drawLetters(s *discordgo.Session, m *discordgo.MessageCreate, l []string) {
+	var letters = ""
 	for _, c := range l {
-		s.ChannelMessageSend(m.ChannelID, c)
+		letters = letters + c + " "
 	}
-	s.ChannelMessageSend(m.ChannelID, "")
+	s.ChannelMessageSend(m.ChannelID, letters)
 }
