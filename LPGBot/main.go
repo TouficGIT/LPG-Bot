@@ -62,6 +62,9 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// Current time : for logs
 	cTime := time.Now().Format("01-02-2006 15:04:05")
 
+	// Set LPG Bot playing at !help
+	s.UpdateStatus(0, "Message me for !help")
+
 	// Open logs file
 	f, err := os.OpenFile("logs.txt", os.O_APPEND|os.O_WRONLY, 0600)
 	defer f.Close()
