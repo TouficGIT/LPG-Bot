@@ -23,7 +23,7 @@ func NewHangman(s *discordgo.Session, g *discordgo.Guild, user *discordgo.User, 
 	h = hangman.New(8, hangman.PickWord())
 	hangman.DrawWelcome(s, m)
 	size := strconv.Itoa(len(h.Letters))
-	s.ChannelMessageSend(m.ChannelID, "Mot de "+size+" lettres à trouver\nQuel est votre lettre ? ")
+	s.ChannelMessageSend(m.ChannelID, "Mot de "+size+" lettres à trouver\nQuel est votre lettre ?\n\n **!h <lettre>** pour envoyer une lettre")
 	return h
 }
 
