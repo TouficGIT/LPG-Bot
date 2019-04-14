@@ -21,7 +21,8 @@ A bot multitask for my Discord Server named : **LaPlanqueGaming**
 - [x] Fix GuildRoleAdd / GuildRoleRemove functions, in RicardoGame
 > Solution was to put "Bot role" above others guild's roles
 - [x] Fix role earned display, in RicardoGame
-- [ ] Add a new game (Hangman ?)
+- [x] Add a new game (Hangman ?)
+- [ ] Add a "Choose your own adventure game ?
 - [ ] Refact the code (especially RicardoGame) ?
 
 ## Install
