@@ -10,6 +10,7 @@ A bot multitask for my Discord Server named : **LaPlanqueGaming**
  > The ricardo game allows you to earn new server tags !
  - LPG Bot send you chuck norris facts if you type `!chuck`
  - Play to head and tails with the `!flip` command
+ - Launch a dice with the `!roll` command, good luck !
  - The commands `!weather` / `!wt` / `!meteo` or `!mt` gives you the weather of the 2 next days
 
  - And you can type `!help` if you need some help
