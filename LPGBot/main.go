@@ -142,8 +142,12 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			_, _ = s.ChannelMessageSend(m.ChannelID, weather)
 		case "!flip", "!fp":
 			coin, _ := bot.FlipCoin()
-			_ = s.MessageReactionAdd(m.ChannelID, m.ID, "🎲")
+			_ = s.MessageReactionAdd(m.ChannelID, m.ID, "🎰")
 			_, _ = s.ChannelMessageSend(m.ChannelID, coin)
+		case "!roll":
+			dice := bot.Roll()
+			_ = s.MessageReactionAdd(m.ChannelID, m.ID, "🎲")
+			_, _ = s.ChannelMessageSend(m.ChannelID, dice)
 		case "!help", "!lpg":
 			_ = s.MessageReactionAdd(m.ChannelID, m.ID, "🧙")
 			_, _ = s.ChannelMessageSend(m.ChannelID, helpMsg)
