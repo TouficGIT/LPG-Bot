@@ -117,6 +117,14 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		case "!ricardo":
 			ric, _ := bot.Ricardo(m.Author.Username, m.Content)
 			_, _ = s.ChannelMessageSend(m.ChannelID, ric)
+		/*
+			case "!hangman", "!h":
+				if len(parts) < 2 {
+					_ = bot.NewHangman(s, g, user, m)
+				} else {
+					bot.GHangman(s, g, user, m, parts[1])
+				}
+		*/
 		case "!sd", "!sound", "!dit":
 			for _, vs := range g.VoiceStates {
 				if vs.UserID == m.Author.ID {
