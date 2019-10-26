@@ -14,6 +14,7 @@ var end int
 
 // NewHangman : it used to launch hangman game
 func NewHangman(s *discordgo.Session, g *discordgo.Guild, user *discordgo.User, m *discordgo.MessageCreate) *hangman.Game {
+	fmt.Println("START : NewHangman function - from hangman command")
 	end = 0
 	err := hangman.Load("bot/hangman/words.txt")
 	if err != nil {
@@ -27,7 +28,9 @@ func NewHangman(s *discordgo.Session, g *discordgo.Guild, user *discordgo.User, 
 	return h
 }
 
+// GHangman : Function where Hangman compare try of the user with the actual word to guess
 func GHangman(s *discordgo.Session, g *discordgo.Guild, user *discordgo.User, m *discordgo.MessageCreate, guess string) {
+	fmt.Println("START : GHangman function - from hangman command")
 	if end == 0 && h != nil {
 		guess = strings.TrimSpace(guess)
 		if len(guess) != 1 {

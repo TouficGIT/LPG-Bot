@@ -33,11 +33,16 @@ var LPGSOUND = &soundCollection{
 		createSound("airhorn"),
 		createSound("boi"),
 		createSound("bruh"),
+		createSound("daniel"),
+		createSound("deja"),
 		createSound("fuck"),
 		createSound("mgs"),
+		createSound("nani"),
 		createSound("nice"),
 		createSound("ooh"),
 		createSound("oui"),
+		createSound("ricardo"),
+		createSound("spooky"),
 		createSound("thug"),
 		createSound("wow"),
 	},
@@ -47,7 +52,7 @@ var LPGSOUND = &soundCollection{
 // it is used to play dca sound on discord channel
 // retrieve an error if it can't play the sound
 func PlaySound(s *discordgo.Session, guildID, channelID string, msg string) (err error) {
-
+	fmt.Println("START : PlaySound function - from sound command")
 	var sound *sound
 	parts := strings.Split(strings.ToLower(msg), " ")
 
@@ -55,28 +60,37 @@ func PlaySound(s *discordgo.Session, guildID, channelID string, msg string) (err
 	if len(parts) > 1 {
 		for _, s := range LPGSOUND.Sounds {
 			if parts[1] == s.Name {
+				fmt.Println("Request to play sound : " + s.Name)
 				sound = s
 			}
 		}
 
 		if sound == nil {
+			fmt.Println("ERROR : Sound doesn't exist")
 			return
 		}
 	}
 
 	// Join the provided voice channel.
+	fmt.Println("Join channel ID : " + channelID)
+
 	vc, err := s.ChannelVoiceJoin(guildID, channelID, false, false)
+
 	if err != nil {
+		fmt.Println("ERROR : Bot not has not been able to join the channel properly")
 		return err
 	}
 
+	fmt.Println("Chanel Joined")
 	// Sleep for a specified amount of time before playing the sound
 	time.Sleep(10 * time.Millisecond)
 
 	// Play the sound
+	fmt.Println("Play sound !")
 	sound.Play(vc)
 
 	// Disconnect from the provided voice channel.
+	fmt.Println("Disconnect")
 	vc.Disconnect()
 
 	return nil
@@ -110,11 +124,11 @@ func (sc *soundCollection) LoadAll() {
 // Load attempts to load an encoded sound file from disk
 func (s *sound) load(c *soundCollection) error {
 	path := fmt.Sprintf("bot/dca/%v.dca", s.Name)
-
+	fmt.Println("Loading sound file :", s.Name)
 	file, err := os.Open(path)
 
 	if err != nil {
-		fmt.Println("error opening dca file :", err)
+		fmt.Println("ERROR : opening dca file - ", err)
 		return err
 	}
 
@@ -130,7 +144,7 @@ func (s *sound) load(c *soundCollection) error {
 		}
 
 		if err != nil {
-			fmt.Println("error reading from dca file :", err)
+			fmt.Println("ERROR : reading from dca file - ", err)
 			return err
 		}
 
@@ -140,7 +154,7 @@ func (s *sound) load(c *soundCollection) error {
 
 		// Should not be any end of file errors
 		if err != nil {
-			fmt.Println("error reading from dca file :", err)
+			fmt.Println("ERROR : reading from dca file - ", err)
 			return err
 		}
 

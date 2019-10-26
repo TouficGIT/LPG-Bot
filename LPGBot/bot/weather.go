@@ -37,7 +37,7 @@ type dayWt struct {
 // it takes the city and the day in input
 // it return the weather of the city for the given day
 func Weather(city string) (string, error) {
-
+	fmt.Println("START : Weather function - from weather command")
 	var wt weatherInfo
 	var wtInfo string
 	var wtTdImg string

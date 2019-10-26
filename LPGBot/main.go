@@ -14,13 +14,18 @@ import (
 var helpMsg = `Salut, je suis **LPG Bot** ! Je répond aux commandes suivantes :
 
 - **!hello** ou **!hi** : pour me dire bonjour et je te répondrai
-- **!météo** ou **!mt** + **<ville>** : pour obtenir la météo sur cette ville
+- **!poll "Question" "Choix"** : pour créer un strawpoll
+- **!steam <SteamID>** : pour renseigner ton steam ID
+- **!rl** : pour afficher ton rank sur Rocket League (en 2v2)
 
 - **!sd** ou **!dit** + **<son>** : pour jouer l'un des sons suivants
-	-> boi / bruh / fuck / mgs / nice / ooh / oui / thug et wow
+	-> boi / bruh / daniel / deja / fuck / mgs / nani / nice / ooh ...
+	-> oui / ricardo / spooky / thug et wow
+
 - **!ricardo** : pour participer au RicardoGame !
 - **!hangman** ou **!h** : pour jouer au pendu avec LPG Bot
 - **!chuck** : pour balancer une fact sur chuck norris
+- **!météo** ou **!mt** + **<ville>** : pour obtenir la météo sur cette ville
 
 - **!flip** : pour jouer à pile ou face
 - **!roll** : pour lancer un dé
@@ -37,6 +42,9 @@ func main() {
 	}
 
 	// Load all lpg sounds into a buffer
+	fmt.Println("")
+	fmt.Println("INFO : -- Loading all lpg sounds into a buffer --")
+	fmt.Println("")
 	bot.LPGSOUND.LoadAll()
 
 	// creation of lpgBot
@@ -48,6 +56,7 @@ func main() {
 	}
 
 	lpgBot.AddHandler(messageHandler)
+	lpgBot.AddHandler(newUserHandler)
 	err = lpgBot.Open()
 
 	if err != nil {
@@ -55,6 +64,7 @@ func main() {
 		return
 	}
 
+	fmt.Println("")
 	fmt.Println("LPG Bot is connected !")
 
 	<-make(chan struct{})
@@ -67,7 +77,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	cTime := time.Now().Format("01-02-2006 15:04:05")
 
 	// Set LPG Bot playing at !help
-	s.UpdateStatus(0, "Message me for !help")
+	s.UpdateStatus(0, "Besoins d'aide ? !help")
 
 	// Open logs file
 	f, err := os.OpenFile("logs.txt", os.O_APPEND|os.O_WRONLY, 0600)
@@ -115,12 +125,17 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		// Split the message content
 		parts := strings.Split(strings.ToLower(m.Content), " ")
 
+		// Parsing of the content message in order to launch the proper command
 		switch parts[0] {
 		case "!hello", "!salut", "!hi":
 			_, _ = s.ChannelMessageSend(m.ChannelID, "Salut "+m.Author.Username+" !")
 			_ = s.MessageReactionAdd(m.ChannelID, m.ID, "🤙")
 		case "!chuck":
-			fact, _ := bot.ChuckFact()
+			fact, err := bot.ChuckFact()
+			if err != nil {
+				fmt.Println("Time: " + cTime + " || ERROR : chuckfact function error")
+				fmt.Println(err)
+			}
 			_, _ = s.ChannelMessageSend(m.ChannelID, fact)
 		case "!ricardo":
 			ric, _ := bot.Ricardo(m.Author.Username, m.Content)
@@ -131,9 +146,28 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			} else {
 				bot.GHangman(s, g, user, m, parts[1])
 			}
+		case "!poll":
+			err = bot.CreatePoll(s, m)
+			if err != nil {
+				fmt.Println("Time: " + cTime + " || ERROR : during poll function process")
+				fmt.Println(err)
+			}
+		case "!steam":
+			err = bot.AddSteamID(s, m)
+			if err != nil {
+				fmt.Println("Time: " + cTime + " || ERROR : during RL Getstat function process")
+				fmt.Println(err)
+			}
+		case "!rl":
+			err = bot.GetStats(s, m)
+			if err != nil {
+				fmt.Println("Time: " + cTime + " || ERROR : during RL Getstat function process")
+				fmt.Println(err)
+			}
 		case "!sd", "!sound", "!dit":
 			for _, vs := range g.VoiceStates {
 				if vs.UserID == m.Author.ID {
+					fmt.Println("Time: " + cTime + " || User :" + user.Username + " ||  Playsound command")
 					err = bot.PlaySound(s, g.ID, vs.ChannelID, m.Content)
 					if err != nil {
 						fmt.Println("Error playing sound:", err)
@@ -142,6 +176,8 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 					return
 				}
 			}
+		case "!prank":
+
 		case "!wt", "!weather", "!meteo", "!météo", "!mt":
 			_ = s.MessageReactionAdd(m.ChannelID, m.ID, "🌞")
 			weather, _ := bot.Weather(parts[1])
@@ -155,13 +191,55 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			_ = s.MessageReactionAdd(m.ChannelID, m.ID, "🎲")
 			_, _ = s.ChannelMessageSend(m.ChannelID, dice)
 		case "!help", "!lpg":
+			// create a private messaging channel between the bot and the user
+			privChan, err := s.UserChannelCreate(m.Author.ID)
+			if err != nil {
+				println("ERROR : -" + parts[0] + "- Could not create channel between bot and user. ")
+				return
+			}
 			_ = s.MessageReactionAdd(m.ChannelID, m.ID, "🧙")
-			_, _ = s.ChannelMessageSend(m.ChannelID, helpMsg)
+			_, _ = s.ChannelMessageSend(privChan.ID, helpMsg)
 		default:
 			_, _ = s.ChannelMessageSend(m.ChannelID, "Je n'ai pas compris ton message "+m.Author.Username+"  ¯\\_(ツ)_/¯")
 			_ = s.MessageReactionAdd(m.ChannelID, m.ID, "🤔")
 		}
+		fmt.Println("")
+	}
+}
 
+func newUserHandler(s *discordgo.Session, event *discordgo.GuildMemberAdd) {
+	cTime := time.Now().Format("01-02-2006 15:04:05")
+	fmt.Println("INFO : New user - guild member add event triggered")
+	fmt.Println("Joined at : " + cTime + "\n User ID : " + event.User.Username)
+
+	guild, err := s.Guild(event.GuildID)
+	if err != nil {
+		println("ERROR : Could not retrieve guild object from identifier. ")
+		return
 	}
 
+	// create a private messaging channel between the bot and the new guild member
+	privChan, err := s.UserChannelCreate(event.User.ID)
+	if err != nil {
+		println("ERROR : Could not create channel between bot and user. ")
+		return
+	}
+
+	// send greet message to new guild member
+	s.ChannelMessageSend(privChan.ID, "Salut "+event.User.Username+" ! \n\n**Bienvenu sur le serveur "+guild.Name+" ! :video_game:**\n\n Je suis le bot de ce serveur et avant de démarrer ton aventure ici, je vais juste te demander de jeter un petit coup d'oeil au channel des <#434444368418570243>.\n\n Voilà, c'est tout. N'hésites pas à venir nous saluer sur <#373160766670503957> \n\n Enjoy ! :call_me:\n Toufic & Saya")
 }
+
+// Commands deleted - copy/past them into 'switch' to bring them back to life
+/*
+   case "!esport":
+   token, err := bot.ConnectEsport()
+   if err != nil {
+   	fmt.Println("Time: " + cTime + " || ERROR: Command esport")
+   	fmt.Println(err)
+   }
+   err = bot.GetTournament(s, token, m)
+   if err != nil {
+   	fmt.Println("Time: " + cTime + " || ERROR: Command esport - GetTournament")
+   	fmt.Println(err)
+   }
+*/

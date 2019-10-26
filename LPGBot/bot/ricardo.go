@@ -16,7 +16,6 @@ type User struct {
 	Username string `json:"username"`
 	Points   int    `json:"points"`
 	Badge    string `json:"badge"`
-	Role     string `json:"role"`
 }
 
 var rIntro = `
@@ -39,7 +38,7 @@ Have fun !
 // Ricardo func : it used to register a player to ricardo game
 // if the player is not already registered, else it return a msg
 func Ricardo(msgUser string, msg string) (string, error) {
-
+	fmt.Println("START : Ricardo function - from ricardo command")
 	var u []User
 	msgUser = strings.ToLower(msgUser)
 	parts := strings.Split(strings.ToLower(msg), " ")
@@ -62,7 +61,7 @@ func Ricardo(msgUser string, msg string) (string, error) {
 	for i := 0; i < len(u); i++ {
 		if msgUser == u[i].Username {
 			if len(parts) > 1 && parts[1] == "stat" {
-				return "```" + rIntro + "```\n\nUsername: " + strings.ToUpper(msgUser) + "\nRôle obtenu: " + u[i].Role + "\nVotre score actuel: " + strconv.Itoa(u[i].Points) + "\nBadge: " + u[i].Badge, nil
+				return "```" + rIntro + "```\n\nUsername: " + strings.ToUpper(msgUser) + "\nVotre score actuel: " + strconv.Itoa(u[i].Points) + "\nBadge: " + u[i].Badge, nil
 			}
 			return "Vous participez déjà au ricardo game " + strings.ToUpper(msgUser) + " ! 🎮\n```!ricardo stat: pour obtenir vos statistiques```\n", nil
 		}
@@ -73,7 +72,7 @@ func Ricardo(msgUser string, msg string) (string, error) {
 	// write into the json file.
 
 	// Adding the new player
-	data := append(u, User{Username: msgUser, Points: 0, Badge: "", Role: ""})
+	data := append(u, User{Username: msgUser, Points: 0, Badge: ""})
 	// Marshal the new user to the json file
 	add, err := json.Marshal(data)
 	if err != nil {
@@ -92,7 +91,6 @@ func Ricardo(msgUser string, msg string) (string, error) {
 func RicardoGame(s *discordgo.Session, g *discordgo.Guild, user *discordgo.User) (string, error) {
 	var u []User
 	var newTag string
-	var newRole string
 	uName := strings.ToLower(user.Username)
 
 	// Open our jsonFile
@@ -107,8 +105,6 @@ func RicardoGame(s *discordgo.Session, g *discordgo.Guild, user *discordgo.User)
 	if err != nil {
 		fmt.Println("Unknown response body")
 	}
-	// Get the guild's roles
-	gRoles, _ := s.GuildRoles(g.ID)
 
 	json.Unmarshal(ct, &u)
 	for i := 0; i < len(u); i++ {
@@ -118,14 +114,12 @@ func RicardoGame(s *discordgo.Session, g *discordgo.Guild, user *discordgo.User)
 			switch u[i].Points {
 			case 10:
 				u[i].Badge = "https://tenor.com/view/ricardo-super-saiyan-smile-gif-13677081"
-				newRole = "Newbies"
-				newTag = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTon nouveau rôle: " + newRole + "\nTu obtiens le badge: \n" + u[i].Badge
+				newTag = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTon nouveau rôle: " + "\nTu obtiens le badge: \n" + u[i].Badge
 			case 30:
 				u[i].Badge = "https://tenor.com/view/ricardo-super-saiyan2-smile-gif-13677092"
 				newTag = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTu obtiens le badge \n" + u[i].Badge
 			case 60:
 				u[i].Badge = "https://tenor.com/view/ricardo-super-saiyan3-flex-gif-13677095"
-				newRole = "PGM"
 				newTag = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTu obtiens le badge \n" + u[i].Badge
 			case 110:
 				u[i].Badge = "https://tenor.com/view/ricardo-super-saiyan-god-gif-13677088"
@@ -135,30 +129,10 @@ func RicardoGame(s *discordgo.Session, g *discordgo.Guild, user *discordgo.User)
 				newTag = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTu obtiens le badge \n" + u[i].Badge
 			case 300:
 				u[i].Badge = "https://tenor.com/view/ricardo-fused-super-saiyan-blue-gif-13677091"
-				newRole = "Ricardos"
 				newTag = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTu obtiens le badge \n" + u[i].Badge
 			case 600:
 				u[i].Badge = "https://tenor.com/view/ricardo-ultra-instinct-sexy-dancing-gif-13677084"
 				newTag = "```" + rIntro + "```\n\nFélicitation " + strings.ToUpper(u[i].Username) + " !\nTu obtiens le badge \n" + u[i].Badge
-			}
-			if len(newRole) != 0 {
-				for _, nRole := range gRoles {
-					if u[i].Role == nRole.Name {
-						err = s.GuildMemberRoleRemove(g.ID, user.ID, nRole.ID)
-						if err != nil {
-							println("GuildMemberRoleRemove(" + g.ID + "," + user.ID + "," + nRole.ID + ")")
-							println("Impossible de retirer le rôle: "+nRole.Name+" au joueur: "+user.Username+" sur le serveur "+g.Name, err)
-						}
-					}
-					if newRole == nRole.Name {
-						err = s.GuildMemberRoleAdd(g.ID, user.ID, nRole.ID)
-						if err != nil {
-							println("GuildMemberRoleAdd(" + g.ID + "," + user.ID + "," + nRole.ID + ")")
-							println("Impossible d'affecter le rôle: "+nRole.Name+" au joueur: "+user.Username+" sur le serveur "+g.Name, err)
-						}
-					}
-				}
-				u[i].Role = newRole
 			}
 		}
 	}

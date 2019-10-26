@@ -1,9 +1,13 @@
 package bot
 
-import "math/rand"
+import (
+	"fmt"
+	"math/rand"
+)
 
 // FlipCoin func: it's used to return the result of a coin flip
 func FlipCoin() (string, error) {
+	fmt.Println("START : FlipCoin function")
 	random := rand.Intn(2)
 	switch random {
 	case 0:

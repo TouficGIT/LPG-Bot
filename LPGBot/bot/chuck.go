@@ -3,6 +3,7 @@ package bot
 import (
 	"encoding/json"
 	"fmt"
+	"html"
 	"io/ioutil"
 	"net/http"
 )
@@ -14,6 +15,7 @@ type chuckJoke struct {
 
 // ChuckFact : Fetch Chuck Norris Joke
 func ChuckFact() (string, error) {
+	fmt.Println("START : ChuckFact function - from chuck command")
 	resp, err := http.Get("https://www.chucknorrisfacts.fr/api/get?data=tri:alea;type:txt;nb:1")
 	if err != nil {
 		fmt.Println("Could not fetch joke")
@@ -26,6 +28,9 @@ func ChuckFact() (string, error) {
 	}
 
 	var joke []chuckJoke
+	fmt.Println("Unmarshal the chuck norris quote")
 	json.Unmarshal(body, &joke)
-	return joke[0].Fact, nil
+	fmt.Println(html.UnescapeString(joke[0].Fact))
+	//UnescapeString used for accented characters (like "é")
+	return html.UnescapeString(joke[0].Fact), nil
 }

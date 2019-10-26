@@ -1,0 +1,16 @@
+Pour ajouter un nouveau son dca 
+
+- Ouvrir un terminal
+
+- Se rendre dans le dossier Go qui contient la commande dca.exe qu'on a build
+-> Go/bin/dca.exe
+
+- Dans ce dossier on mets les sons qu'on veut transformer parce que ce sera plus
+facile pour la suite
+
+- Dans le terminal, on tape ensuite la commande :
+
+-> dca.exe -i fichier.mp3 -ab 16 -raw > fichier.dca
+
+
+Et voilà
