@@ -1,6 +1,6 @@
 # LPG-Bot
 A bot multitask for my Discord Server named : **LaPlanqueGaming**
-<img src="config/LogoBot_alpha.png" alt="lpgbot logo" align="right" width="300" height="244"/>
+<img src="/LPG-Bot/config/LogoBot_alpha.png" alt="lpgbot logo" align="right" width="300" height="244"/>
 ## Current features
 
  - When you type `!hello` LPG Bot answers you
