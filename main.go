@@ -235,6 +235,10 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			err = bot.GetRLStat(s, m, args)
 			print.CheckError("[ERROR] RL function", user.Username, err)
 
+		case "lol":
+			err = bot.GetLolStat(s, m, args, conf.LolKey)
+			print.CheckError("[ERROR] LOL function", user.Username, err)
+
 		// [OTHER]
 
 		case "poll":

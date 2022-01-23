@@ -40,6 +40,7 @@ The syntax of your config file should be like :
     {
       "Token": "YOUR TOKEN",
       "BotPrefix": "!"
+      "LolKey": "Riot Api key"
     }
 
 

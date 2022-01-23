@@ -166,29 +166,3 @@ func GetRLStat(s *discordgo.Session, m *discordgo.MessageCreate, args []string) 
 				Inline: true,
 }
 */
-
-/*
-	StatsOverview struct {
-		Wins struct {
-			DisplayValue string `json:"displayValue"`
-		} `json:"wins"`
-		Goals struct {
-			DisplayValue string `json:"displayValue"`
-		} `json:"goals"`
-		MVPs struct {
-			DisplayValue string `json:"displayValue"`
-		} `json:"mVPs"`
-		Saves struct {
-			DisplayValue string `json:"displayValue"`
-		} `json:"saves"`
-		Assists struct {
-			DisplayValue string `json:"displayValue"`
-		} `json:"assists"`
-		Shots struct {
-			DisplayValue string `json:"displayValue"`
-		} `json:"shots"`
-		Score struct {
-			DisplayValue string `json:"displayValue"`
-		} `json:"score"`
-	} `json:"stats,omitempty"`
-*/
