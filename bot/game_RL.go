@@ -73,7 +73,7 @@ func GetRLStat(s *discordgo.Session, m *discordgo.MessageCreate, args []string) 
 	}
 
 	// Unmarshal JSON response for PlaylistStats
-	print.DebugLog("[DeBUG] Unmarshal RLPlaylist", "[SERVER]")
+	print.DebugLog("[DEBUG] Unmarshal RLPlaylist", "[SERVER]")
 	json.Unmarshal(body, &RLPlaylist)
 
 	// Set values to each playlist variables, from the JSON response

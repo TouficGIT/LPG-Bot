@@ -75,60 +75,50 @@ func GetLolStat(s *discordgo.Session, m *discordgo.MessageCreate, args []string,
 		champion                    Champion
 	)
 
+	// Check numbers of arguments from Lol command
 	if len(args) < 2 {
 		_, _ = s.ChannelMessageSend(m.ChannelID, "Not enough arguments. I need your Username")
 		return nil
 	}
 
 	if len(args) >= 3 {
-		_, _ = s.ChannelMessageSend(m.ChannelID, "Too ;uch arguments. I just need your username")
+		_, _ = s.ChannelMessageSend(m.ChannelID, "Too much arguments. I just need your username")
 		return nil
 	}
 
+	// Get summoner username, from args
 	username = args[1]
-	url = "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + username + "?api_key=" + apiKey
 
-	// Contact URL api
-	print.DebugLog("[DEBUG] Contact URL api", "[SERVER]")
-	resp, err := http.Get(url)
-	if err != nil {
-		print.CheckError("[ERROR] Could not contact LOL api: "+url, "[SERVER]", err)
-		return err
-	}
-	// Read the response from the URL
-	print.DebugLog("[DEBUG] Read the response from the URL", "[SERVER]")
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		print.CheckError("[ERROR] Unable to read response from LOL api", "[SERVER]", err)
-		return err
-	}
+	// Get summoner ID from summoners API
+	url = "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + username + "?api_key=" + apiKey
+	body, err := GetByte(url)
 
 	// Unmarshal JSON response for Summoner info
-	print.DebugLog("[DeBUG] Unmarshal Summoner info", "[SERVER]")
-	json.Unmarshal(body, &summoner)
+	print.DebugLog("[DEBUG] Unmarshal Summoner info", "[SERVER]")
+	if err != nil {
+		json.Unmarshal(body, &summoner)
+	} else {
+		print.DebugLog("[DEBUG] Error, body response is empty", "[SERVER]")
+		return
+	}
 
 	summonerID = summoner.ID
 
+	if summonerID == "" {
+		_, _ = s.ChannelMessageSend(m.ChannelID, "No information found for summoner: "+username)
+		return nil
+	}
+
+	// Get Rank info with summoner ID
 	url = "https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + summonerID + "?api_key=" + apiKey
+	body, err = GetByte(url)
 
-	// Contact URL api
-	print.DebugLog("[DEBUG] Contact URL api", "[SERVER]")
-	resp, err = http.Get(url)
 	if err != nil {
-		print.CheckError("[ERROR] Could not contact LOL api: "+url, "[SERVER]", err)
-		return err
+		json.Unmarshal(body, &ranked)
+	} else {
+		print.DebugLog("[DEBUG] Error, body response is empty", "[SERVER]")
+		return
 	}
-	// Read the response from the URL
-	print.DebugLog("[DEBUG] Read the response from the URL", "[SERVER]")
-	body, err = ioutil.ReadAll(resp.Body)
-	if err != nil {
-		print.CheckError("[ERROR] Unable to read response from LOL api", "[SERVER]", err)
-		return err
-	}
-
-	// Unmarshal JSON response for Rank info
-	print.DebugLog("[DeBUG] Unmarshal Rank info", "[SERVER]")
-	err = json.Unmarshal(body, &ranked)
 
 	if ranked.IsStructureEmpty() {
 		rankUser = "You have no rank atm."
@@ -139,30 +129,21 @@ func GetLolStat(s *discordgo.Session, m *discordgo.MessageCreate, args []string,
 		rankImg = "https://raw.githubusercontent.com/TouficGIT/LPG-Bot/main/_files/lol_rank/emblem_" + strings.ToLower(tierUser) + ".png"
 	}
 
+	// Get champion mastery with champion-masteries API
 	url = "https://euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/" + summonerID + "?api_key=" + apiKey
+	body, err = GetByte(url)
 
-	// Contact URL api
-	print.DebugLog("[DEBUG] Contact URL api", "[SERVER]")
-	resp, err = http.Get(url)
 	if err != nil {
-		print.CheckError("[ERROR] Could not contact LOL api: "+url, "[SERVER]", err)
-		return err
+		json.Unmarshal(body, &mastery)
+	} else {
+		print.DebugLog("[DEBUG] Error, body response is empty", "[SERVER]")
+		return
 	}
-	// Read the response from the URL
-	print.DebugLog("[DEBUG] Read the response from the URL", "[SERVER]")
-	body, err = ioutil.ReadAll(resp.Body)
-	if err != nil {
-		print.CheckError("[ERROR] Unable to read response from LOL api", "[SERVER]", err)
-		return err
-	}
-
-	// Unmarshal JSON response for Rank info
-	print.DebugLog("[DeBUG] Unmarshal Rank info", "[SERVER]")
-	json.Unmarshal(body, &mastery)
 
 	championID = mastery[0].ChampionID
 	championPoints = mastery[0].ChampionPoints
 
+	// Translate Champion ID to name with our JSON file
 	jsonFile, err := os.Open("_files/lol_champions/championsIDs.json")
 	if err != nil {
 		print.CheckError("[ERROR] Could not open championsIDs.json", "[SERVER]", err)
@@ -186,6 +167,11 @@ func GetLolStat(s *discordgo.Session, m *discordgo.MessageCreate, args []string,
 		Description: "**Rank 5v5: ** " + tierUser + " " + rankUser,
 		Fields: []*discordgo.MessageEmbedField{
 			&discordgo.MessageEmbedField{
+				Name:   "Summoner Level",
+				Value:  strconv.Itoa(summoner.SummonerLevel),
+				Inline: true,
+			},
+			&discordgo.MessageEmbedField{
 				Name:   "Champion Mastery",
 				Value:  "Name: " + championName + " / " + "Points: " + strconv.Itoa(championPoints),
 				Inline: true,
@@ -207,4 +193,23 @@ func GetLolStat(s *discordgo.Session, m *discordgo.MessageCreate, args []string,
 
 func (ranked Ranked) IsStructureEmpty() bool {
 	return reflect.DeepEqual(ranked, Ranked{})
+}
+
+func GetByte(url string) (body []byte, err error) {
+	// Contact URL api
+	print.DebugLog("[DEBUG] Contact URL api", "[SERVER]")
+	resp, err := http.Get(url)
+	if err != nil {
+		print.CheckError("[ERROR] Could not contact LOL api: "+url, "[SERVER]", err)
+		return nil, err
+	}
+	// Read the response from the URL
+	print.DebugLog("[DEBUG] Read the response from the URL", "[SERVER]")
+	body, err = ioutil.ReadAll(resp.Body)
+	if err != nil {
+		print.CheckError("[ERROR] Unable to read response from LOL api", "[SERVER]", err)
+		return nil, err
+	}
+
+	return body, nil
 }

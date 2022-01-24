@@ -24,8 +24,9 @@ var (
 	-> boi / bruh / coffin / damage / daniel / deja / fuck / krabs / mega
 	-> mgs / nani / nice / ooh / oui / ricardo / spooky / thug / wow
 
-**ROCKET LEAGUE (stats):**
+**ESPORT (stats):**
 ` + "`!rl + <Epic username>`" + ` : to show your stats on Rocket League
+` + "`!lol + <Riot username>`" + ` : to show your stats on League of Legends
 
 **OTHER:**
 ` + "`!poll \"Question\" \"Choice1\" \"Choice2\" ... `" + ` : to create a Strawpoll
