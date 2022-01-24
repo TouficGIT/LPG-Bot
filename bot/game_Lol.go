@@ -96,10 +96,10 @@ func GetLolStat(s *discordgo.Session, m *discordgo.MessageCreate, args []string,
 	// Unmarshal JSON response for Summoner info
 	print.DebugLog("[DEBUG] Unmarshal Summoner info", "[SERVER]")
 	if err != nil {
-		json.Unmarshal(body, &summoner)
-	} else {
 		print.DebugLog("[DEBUG] Error, body response is empty", "[SERVER]")
 		return
+	} else {
+		json.Unmarshal(body, &summoner)
 	}
 
 	summonerID = summoner.ID
@@ -114,15 +114,15 @@ func GetLolStat(s *discordgo.Session, m *discordgo.MessageCreate, args []string,
 	body, err = GetByte(url)
 
 	if err != nil {
-		json.Unmarshal(body, &ranked)
-	} else {
 		print.DebugLog("[DEBUG] Error, body response is empty", "[SERVER]")
 		return
+	} else {
+		json.Unmarshal(body, &ranked)
 	}
 
 	if ranked.IsStructureEmpty() {
 		rankUser = "You have no rank atm."
-		rankImg = "https://trackercdn.com/cdn/tracker.gg/rocket-league/ranks/s4-0.png"
+		rankImg = "https://github.com/TouficGIT/LPG-Bot/blob/main/_files/lol_rank/emblem_norank.png"
 	} else {
 		rankUser = ranked[0].Rank
 		tierUser = ranked[0].Tier
@@ -134,10 +134,10 @@ func GetLolStat(s *discordgo.Session, m *discordgo.MessageCreate, args []string,
 	body, err = GetByte(url)
 
 	if err != nil {
-		json.Unmarshal(body, &mastery)
-	} else {
 		print.DebugLog("[DEBUG] Error, body response is empty", "[SERVER]")
 		return
+	} else {
+		json.Unmarshal(body, &mastery)
 	}
 
 	championID = mastery[0].ChampionID
